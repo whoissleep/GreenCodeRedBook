@@ -1,12 +1,14 @@
 package utility
 
 import (
+	"os"
+
 	"github.com/dgrijalva/jwt-go"
 )
 
 func ParseToken(tokenString string) (claims *Claim, err error) {
 	token, err := jwt.ParseWithClaims(tokenString, &Claim{}, func(token *jwt.Token) (interface{}, error) {
-		return []byte("it_is_my_password"), nil
+		return []byte(os.Getenv("SECRETKEY")), nil
 	})
 
 	if err != nil {

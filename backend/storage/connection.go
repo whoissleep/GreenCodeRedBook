@@ -5,6 +5,8 @@ import (
 	"database/sql/driver"
 	"fmt"
 	"net"
+	"os"
+	"strconv"
 	"time"
 
 	"github.com/GreenCodeBook/src/models"
@@ -34,8 +36,6 @@ type Postgres struct {
 }
 
 func (m *Postgres) New() (db *gorm.DB, err error) {
-	//dsn := fmt.Sprintf("%s:%s@postgres+ssh(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
-	//	m.User, m.Password, m.Host, m.Port, m.Database)
 	dsn := fmt.Sprintf("user=%s password=%s database=%s postgres+ssh(%s:%d)?charset=utf8&parseTime=True&loc=Local",
 		m.User, m.Password, m.Database, m.Host, m.Port)
 	fmt.Println(dsn)
@@ -78,20 +78,23 @@ func (s *SSH) DialWithPassword() (*ssh.Client, error) {
 	return ssh.Dial("tcp", address, config)
 }
 
-func Init() *gorm.DB {
-	client := SSH{
-		Host:     "195.54.178.243",
-		User:     "root",
-		Port:     25980,
-		Password: "misis123",
-	}
+var dial *ssh.Client
 
+func Init() *gorm.DB {
+	sshPort, _ := strconv.Atoi(os.Getenv("SSH_PORT"))
+	client := SSH{
+		Host:     os.Getenv("SSH_HOST"),
+		User:     os.Getenv("SSH_USER"),
+		Port:     sshPort,
+		Password: os.Getenv("SSH_PASSWORD"),
+	}
+	dbPort, _ := strconv.Atoi(os.Getenv("BD_PORT"))
 	mydb := Postgres{
-		Host:     "localhost",
-		User:     "admin",
-		Password: "admin",
-		Port:     5432,
-		Database: "postgres",
+		Host:     os.Getenv("BD_HOST"),
+		User:     os.Getenv("BD_USER"),
+		Password: os.Getenv("BD_PASSWORD"),
+		Port:     dbPort,
+		Database: os.Getenv("BD_DATABASE"),
 	}
 	dial, er := client.DialWithPassword()
 
@@ -99,7 +102,7 @@ func Init() *gorm.DB {
 		panic("NO SSH connection")
 	}
 	fmt.Println("SSH conn done")
-	defer dial.Close()
+	//defer dial.Close()
 
 	sql.Register("postgres+ssh", &Dialer{dial})
 	db, err := mydb.New()
@@ -110,8 +113,13 @@ func Init() *gorm.DB {
 	fmt.Println("ok")
 	err = db.AutoMigrate(&models.User{})
 	if err != nil {
+		fmt.Println("here3")
 		panic(err)
 	}
 	fmt.Println("ok")
 	return db
+}
+
+func Close() {
+	dial.Close()
 }
