@@ -1,4 +1,14 @@
 definitions:
+  models.NoteDto:
+    properties:
+      text:
+        type: string
+      token:
+        type: string
+    required:
+    - text
+    - token
+    type: object
   models.UserDto:
     properties:
       email:
@@ -56,6 +66,65 @@ paths:
       summary: Login User by json
       tags:
       - Users
+  /note:
+    post:
+      consumes:
+      - application/json
+      description: Add Note by jso in detail
+      parameters:
+      - description: Request of Creating Note Object
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.NoteDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: Add Note by json
+      tags:
+      - Notes
+  /noteGetAll:
+    get:
+      consumes:
+      - application/json
+      description: Add Note by jso in detail
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: Add Note by json
+      tags:
+      - Notes
   /user:
     post:
       consumes:

@@ -111,7 +111,10 @@ func Init() *gorm.DB {
 	}
 
 	fmt.Println("ok")
-	err = db.AutoMigrate(&models.User{})
+	err = db.AutoMigrate(
+		&models.User{},
+		&models.Note{},
+	)
 	if err != nil {
 		fmt.Println("here3")
 		panic(err)

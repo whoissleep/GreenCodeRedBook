@@ -28,8 +28,11 @@ func main() {
 	db := storage.Init()
 	//defer storage.Close()
 	userService := services.NewUserSevice(db)
+	noteService := services.NewNoteSevice(db)
 	controllers.AddUser(app, userService)
 	controllers.LoginUser(app, userService)
+	controllers.AddNote(app, noteService)
+	controllers.GetNotesByToken(app, noteService)
 	app.Listen(":3001")
 }
 

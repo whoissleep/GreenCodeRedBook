@@ -12,8 +12,6 @@ import (
 	"gorm.io/gorm"
 )
 
-var SecretKey = os.Getenv("SECRETKEY")
-
 type userService struct {
 	db *gorm.DB
 }
@@ -37,7 +35,7 @@ func (r userService) AddUser(user models.User) error {
 func (r userService) Login(user models.User) (string, error) {
 	var dbUser models.User
 	erdb := r.db.Where("email = ?", user.Email).First(&dbUser)
-	//fmt.Println(dbUser, user)
+	fmt.Println("из бд:", dbUser)
 	if erdb.Error != nil {
 		return "", erdb.Error
 	}
@@ -48,8 +46,9 @@ func (r userService) Login(user models.User) (string, error) {
 	}
 
 	exTime := time.Now().Add(5 * time.Minute)
-	fmt.Println("here in Login token 1")
+	fmt.Println("here in Login token 1", dbUser.Id, dbUser.Role)
 	claims := &utility.Claim{
+		ID:   int(dbUser.Id),
 		Role: dbUser.Role,
 		StandardClaims: jwt.StandardClaims{
 			Subject:   dbUser.Email,
@@ -57,9 +56,18 @@ func (r userService) Login(user models.User) (string, error) {
 		},
 	}
 	fmt.Println("here in Login token 2")
+	fmt.Println(claims)
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	fmt.Println("here in Login token 3")
+	var SecretKey = os.Getenv("SECRETKEY")
+	fmt.Println("here in Login token 3", SecretKey, " <-  ->", os.Getenv("SECRETKEY"))
 	tokenString, err := token.SignedString([]byte(SecretKey))
+
+	claims, er := utility.ParseToken(tokenString)
+	if er != nil {
+		fmt.Println("error in parse ", er)
+	}
+	fmt.Println("after parse in login", claims)
+
 	fmt.Println("here in Login error", err)
 	if err != nil {
 		return "", errors.New("token couldnt be generated")

@@ -5,8 +5,7 @@ import (
 )
 
 type Claim struct {
-	Login    string `json:"login"`
-	HashPass string `json:"pass"`
-	Role     string `json:"role"`
+	ID   int    `json:"id"`
+	Role string `json:"role"`
 	jwt.StandardClaims
 }
