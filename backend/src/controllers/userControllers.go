@@ -1,8 +1,6 @@
 package controllers
 
 import (
-	"fmt"
-
 	"github.com/GreenCodeBook/src/models"
 	"github.com/GreenCodeBook/src/services"
 	"github.com/gofiber/fiber/v2"
@@ -22,7 +20,6 @@ import (
 //	@Router			/user [post]
 func AddUser(app *fiber.App, userService services.UserService) fiber.Router {
 	return app.Post("/user", func(c *fiber.Ctx) error {
-		fmt.Println("here")
 		var UserDto models.UserDto
 		var User models.User
 		err := c.BodyParser(&UserDto)
@@ -55,12 +52,9 @@ func AddUser(app *fiber.App, userService services.UserService) fiber.Router {
 func LoginUser(app *fiber.App, userService services.UserService) fiber.Router {
 	return app.Get("/login", func(c *fiber.Ctx) error {
 		var userDto models.LoginUserDto
-		//fmt.Println("here ", c.Params("login"))
 		userDto.Email = c.Get("login")
 		userDto.Password = c.Get("password")
-		fmt.Println(userDto)
 		var user models.User = userDto.MapToUser()
-		fmt.Println("here ", user)
 		token, err := userService.Login(user)
 		if err == nil {
 			return c.Status(fiber.StatusOK).JSON(token)
