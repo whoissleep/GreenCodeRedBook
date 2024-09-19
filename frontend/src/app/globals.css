@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --background: linear-gradient(#FF961C, #FFFFFF, #007613);
+    --foreground: linear-gradient(#FF961C, #FFFFFF, #007613);
+  }
+}
+
+body {
+  top:0;
+  bottom:0;
+  background: linear-gradient(#FFBC6D, #FFFFFF, #67AD72);
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 748px;
+  font-family: var(--font-inter);
+}
+
+nav {
+  background-color: #23C55E;
+  padding: 9px 15px;
+  color:white;
+}
+
+button {
+  background-color: #FF730D;
+  color: white;
+  border-radius: 10px;
+  padding: 3px;
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+label {
+  font-family: var(--font-inter);
+  font-weight: 800;
+  font-size: xx-large;
+}
+
+.wrapper {
+	position: relative;
+	min-height: 100%;
+}
+
+.content {
+	padding-bottom: 90px;
+}
+
+footer {
+  bottom:0;
+  height:80px;
+  margin-top: -80px;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
