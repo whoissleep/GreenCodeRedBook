@@ -1,8 +1,6 @@
 package models
 
 import (
-	"fmt"
-
 	"github.com/GreenCodeBook/src/utility"
 	"gorm.io/gorm"
 )
@@ -24,7 +22,6 @@ func (dto *NoteDto) MapToNote() (Note, error) {
 
 	claims, er := utility.ParseToken(dto.Token)
 	if er != nil {
-		fmt.Println("error in parse ", er)
 		return Note{}, er
 	}
 	id := claims.ID

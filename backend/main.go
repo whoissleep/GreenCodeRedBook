@@ -26,7 +26,7 @@ func main() {
 	appGroup := app.Group("/moder")
 	appGroup.Use(middleware.Aunthorization)
 	db := storage.Init()
-	//defer storage.Close()
+	defer storage.Close()
 	userService := services.NewUserSevice(db)
 	noteService := services.NewNoteSevice(db)
 	controllers.AddUser(app, userService)

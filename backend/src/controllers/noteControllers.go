@@ -1,8 +1,6 @@
 package controllers
 
 import (
-	"fmt"
-
 	"github.com/GreenCodeBook/src/models"
 	"github.com/GreenCodeBook/src/services"
 	"github.com/GreenCodeBook/src/utility"
@@ -29,9 +27,7 @@ func AddNote(app *fiber.App, noteService services.NoteService) fiber.Router {
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON("User format is not valid")
 		}
-		fmt.Println(noteDto)
 		note, err := noteDto.MapToNote()
-		fmt.Println(note)
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(err)
 		}
@@ -59,15 +55,11 @@ func AddNote(app *fiber.App, noteService services.NoteService) fiber.Router {
 func GetNotesByToken(app *fiber.App, noteService services.NoteService) fiber.Router {
 	return app.Get("/noteGetAll", func(c *fiber.Ctx) error {
 		token := c.Get("token")
-		fmt.Println(token)
 
 		claims, er := utility.ParseToken(token)
 		if er != nil {
-			fmt.Println("error in parse ", er)
 			return c.Status(fiber.StatusBadRequest).JSON(er)
 		}
-		fmt.Println("_______________________________________")
-		fmt.Println(claims)
 
 		id := claims.ID
 

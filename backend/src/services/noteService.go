@@ -1,8 +1,6 @@
 package services
 
 import (
-	"fmt"
-
 	"github.com/GreenCodeBook/src/models"
 	"gorm.io/gorm"
 )
@@ -19,7 +17,6 @@ type NoteService interface {
 func (r noteService) AddNote(note models.Note) error {
 	erdb := r.db.Create(&note)
 	if erdb.Error != nil {
-		fmt.Println(erdb)
 		return erdb.Error
 	}
 	return nil
