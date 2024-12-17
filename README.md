@@ -5,7 +5,7 @@ MISIS IN DA GAME
 Team Members:
 
 1. **Александр Серебрянников** - Software Engineer. Student in NUST MISIS University.
-2. **Егор Гречин** – NLP/RAG engineer at SOGAZ. Student in NUST MISIS University.
+2. **Егор Гречин** – LLM/RAG engineer at SOGAZ. Student in NUST MISIS University.
 3. **Ольга Поляховская** – Software Engineer. Student in NUST MISIS University.
 4. **Минкаил Толабаев** – Middle Project Manager at Vusion Studio. Student in NUST MISIS University.
 5. **Арсений Бутывских** – Software Engineer. Student in NUST MISIS University.
